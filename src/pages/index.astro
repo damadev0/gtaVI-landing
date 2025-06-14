@@ -1,11 +1,98 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from '@/layouts/Layout.astro';
+import HeroKeyLogo from '@/assets/gta_bitten_2560x1313.webp'
+import HeroKeyBackground from '@/assets/jason_lucia_pier_2560x1313.webp'
+import ViIcon from '@/assets/vi_icon.svg'
+import MenuIcon from '@/assets/menu_icon_small.svg'
+import PlayButtonIcon from '@/assets/play_button_icon.svg'
+import ViLogo from '@/assets/vi-logo.svg'
 ---
 
 <Layout>
-	<Welcome />
+	<div id="logo-mask" class="fixed top-0 w-screen h-screen">
+		<section>
+			<picture
+				id="hero-key"
+				class="h-screen scale-125 block overflow-hidden fixed inset-0"
+				>
+				<img
+				id="hero-key-logo"
+				alt="key logo"
+				src={HeroKeyLogo.src}
+				class="absolute w-full h-full object-cover"
+				/>
+				<img
+				id="hero-key-background"
+				alt="key background"
+				src={HeroKeyBackground.src}
+				class="w-full h-full object-cover"
+				/>
+			</picture>
+		</section>
+	</div>
+	<picture>
+		<img src="{}" />
+	</picture>
+
+	<div
+		class="fixed flex flex-col items-center justify-between h-screen p-16 w-full"
+	>
+		<header class="flex justify-between w-full">
+			<ViIcon class="size-10 text-white"/>
+			<MenuIcon class="size-10"/>
+		</header>
+		<button
+			class="m-auto absolute inset-0 inline-block"
+		>
+			<PlayButtonIcon
+				id="hero-play-button"
+				class="size-34 m-auto cursor-pointer mt-14 backdrop-blur-lg rounded-full hover:scale-105 transition-transform duration-400"
+			/>
+		</button>
+		<footer id="hero-footer" class="absolute bottom-8 m-auto">
+			<ViLogo class="text-white size-34 drop-shadow-[0_0_2px_rgba(255,255,255,.5),0_0_8px_#000]"/>
+			<span
+				
+				class="absolute uppercase tracking-[6px] whitespace-nowrap text-center top-[38%] font-medium text-shadow-[0_0_2px_rgba(255,255,255,.5),0_0_8px_#000] left-1/2 -translate-x-1/2 cursor"
+			>
+			Watch trailer 2</span>
+		</footer>
+	</div> 
 </Layout>
+
+<style>
+	#logo-mask {
+		background: white;
+		mask-image: url("/gta-logo.svg");
+		mask-position: center 25%;
+		mask-repeat: no-repeat;
+		mask-size: clamp(5000vh, 3500%, 0vh);
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+	gsap.registerPlugin(ScrollTrigger)
+
+	const tl = gsap.timeline({
+		ease: 'power2.out',
+		scrollTrigger: {
+			scrub: 1
+		}
+	})
+
+	tl
+		.to('#hero-key', { scale: 1, duration: 1 })
+		.to('#hero-key-logo', { opacity: 0 }, "<")
+		.to('#hero-play-button', { opacity: 0, cursor: 'default' }, "<")
+		.to('#hero-footer', { opacity: 0 }, "<")
+		.to('#logo-mask', {
+			maskSize: "clamp(20vh, 25%, 30vh)"
+		}, 0.3)
+		.to('#hero-key', {
+			opacity: 0,
+			duration: 0.2
+		}, 0.6)
+</script>
